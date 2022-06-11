@@ -1,8 +1,10 @@
 <script lang="ts">
+    import FileLoad from './components/FileLoad.svelte';
 </script>
 
 <main>
     <h1>Werd</h1>
+    <FileLoad />
 </main>
 
 <style lang="scss">

@@ -1,6 +1,6 @@
 export type PuzHeader = {
     checksum: number;
-    fileMagic: 'ACROSS&DOWN';
+    fileMagic: string;
     cibChecksum: number;
     maskedLowChecksums: number;
     maskedHighChecksums: number;
@@ -12,4 +12,11 @@ export type PuzHeader = {
     numClues: number;
     unknownBitmask: number;
     scrambledTag: number;
+};
+
+export type PuzStrings = {
+    title: string;
+    author: string;
+    copyright: string;
+    notes: string;
 };
