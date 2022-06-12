@@ -20,3 +20,14 @@ export type PuzStrings = {
     copyright: string;
     notes: string;
 };
+
+export type CellData = {
+    type: 'cell'|'block';
+    rowNum: number;
+    colNum: number;
+    content: string;
+    solution: string;
+    across: number;
+    down: number;
+    starts: 'across'|'down';
+};
