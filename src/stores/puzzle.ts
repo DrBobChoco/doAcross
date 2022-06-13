@@ -1,9 +1,12 @@
-import { writable } from 'svelte/store';
-import type { PuzHeader, PuzStrings, CellData } from '../types/puzzle.type';
+import { Writable, writable } from 'svelte/store';
+import type { PuzHeader, PuzStrings, CellData, ClueData } from '../types/puzzle.type';
 
-export const puzHeader = writable(null);
-export const puzStrings = writable(null);
-export const cellData = writable([]);
+export const puzHeader: Writable<PuzHeader> = writable(null);
+export const puzStrings: Writable<PuzStrings> = writable(null);
+export const cellData: Writable<CellData[][]> = writable(null);
+export const clueData: Writable<{across: ClueData[]; down: ClueData[];}> = writable(null);
+export const currentCell: Writable<[number, number]> = writable(null);
+export const currentClue: Writable<[number, 'across'|'down']> = writable(null);
 
 
 export const loadPuzzle = async (file: File) => {
@@ -41,6 +44,7 @@ export const loadPuzzle = async (file: File) => {
 
     let cells: CellData[][] = [];
     let nextNum = 1;
+    let clueNums: [number, 'across'|'down'][] = [];
     for(let rowNum = 0; rowNum < header.height; rowNum++) {
         let row: CellData[] = [];
         for(let colNum = 0; colNum < header.width; colNum++) {
@@ -57,6 +61,7 @@ export const loadPuzzle = async (file: File) => {
                     typeof playerState[rowNum][colNum + 1] !== 'undefined' && playerState[rowNum][colNum + 1] !== '.'
                 ) {
                     across = nextNum++;
+                    clueNums.push([across, 'across']);
                     starts = 'across';
                 }
                 //Get down clue number
@@ -67,6 +72,7 @@ export const loadPuzzle = async (file: File) => {
                     typeof playerState[rowNum + 1]?.[colNum] !== 'undefined' && playerState[rowNum + 1][colNum] !== '.'
                 ) {
                     down = starts ? across : nextNum++;
+                    clueNums.push([down, 'down']);
                     starts = 'down';
                 }
             }
@@ -94,7 +100,31 @@ export const loadPuzzle = async (file: File) => {
         notes: stringsClues[3 + header.numClues],
     };
     puzStrings.set(strings);
-    const clues = stringsClues.slice(3, 3 + header.numClues);
+
+    let clues: {
+        across: ClueData[];
+        down: ClueData[];
+    } = {
+        across: [],
+        down: [],
+    };
+    let number: number;
+    let direction: 'across'|'down';
+    let thisClueData: ClueData;
+    stringsClues.slice(3, 3 + header.numClues).forEach((clue, idx) => {
+        [number, direction] = clueNums[idx];
+        thisClueData = {
+            number,
+            direction,
+            clue,
+        };
+        if(direction === 'across') {
+            clues.across.push(thisClueData);
+        } else {
+            clues.down.push(thisClueData);
+        }
+    });
+    clueData.set(clues);
 
     //console.log('Header:', header);
     //console.log('Solution:', solution);

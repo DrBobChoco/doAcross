@@ -31,3 +31,9 @@ export type CellData = {
     down: number;
     starts: 'across'|'down';
 };
+
+export type ClueData = {
+    number: number;
+    direction: 'across'|'down';
+    clue: string;
+};
