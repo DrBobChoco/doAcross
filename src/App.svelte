@@ -11,9 +11,9 @@
         <h1>{$puzStrings.title}{#if $puzStrings.author !== ''}&nbsp;by&nbsp;{$puzStrings.author}{/if}</h1>
         <Grid />
         <h2>Across</h2>
-        <ClueList clueData={$clueData.across} />
+        <ClueList direction='across' clueData={$clueData.across} />
         <h2>Down</h2>
-        <ClueList clueData={$clueData.down} />
+        <ClueList direction='down' clueData={$clueData.down} />
     {:else}
         <h1>Werd</h1>
         <FileLoad />
