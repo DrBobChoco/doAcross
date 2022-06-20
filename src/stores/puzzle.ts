@@ -6,6 +6,7 @@ export const puzStrings: Writable<PuzStrings> = writable(null);
 export const cellData: Writable<CellData[][]> = writable(null);
 export const clueData: Writable<{across: ClueData[]; down: ClueData[];}> = writable(null);
 export const currentCell: Writable<[number, number]> = writable(null);
+export const canType: Writable<boolean> = writable(false);
 export const currentClue: Writable<[number, 'across'|'down']> = writable(null);
 
 

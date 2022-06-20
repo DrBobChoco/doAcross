@@ -1,6 +1,7 @@
 :root {
     --c-hilight: #aac8aa;
-    --c-selected: #f00;
+    --c-selected: #f66;
+    --c-selected-type: #f00;
 }
 
 html, body {

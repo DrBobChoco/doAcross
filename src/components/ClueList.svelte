@@ -4,6 +4,7 @@
 
     export let direction: 'across'|'down';
     export let clueData: ClueData[];
+    export let acceptKeyInput;
 
     const onClick = (clueNum) => {
         $currentClue = [clueNum, direction];
@@ -11,6 +12,7 @@
             (cd) => cd[direction] === clueNum && (cd.starts === direction || (cd.starts !== null && cd.across === cd.down))
         )[0];
         $currentCell = [currentCellData.rowNum, currentCellData.colNum];
+        acceptKeyInput();
     };
 </script>
 

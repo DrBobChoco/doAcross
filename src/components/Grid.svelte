@@ -1,6 +1,8 @@
 <script lang="ts">
     import { cellData } from '../stores/puzzle';
     import Cell from '../components/Cell.svelte';
+
+    export let acceptKeyInput;
 </script>
 
 <section>
@@ -8,7 +10,7 @@
         {#each $cellData as row}
             <div class="row">
                 {#each row as cell}
-                    <Cell cellData={cell} />
+                    <Cell cellData={cell} acceptKeyInput={acceptKeyInput} />
                 {/each}
             </div>
         {/each}
