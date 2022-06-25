@@ -1,0 +1,23 @@
+{
+    "name": "DoAcross",
+    "short_name": "DoAcross",
+    "description": "Do 'Across Lite' puzzles",
+    "icons": [
+        {
+            "src": "images/icon-32.png",
+            "sizes": "32x32",
+            "type": "image/png"
+
+        },
+        {
+            "src": "images/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+
+        }
+    ],
+    "start_url": "index.html",
+    "display": "standalone",
+    "theme_color": "#aac8aa",
+    "background_color": "#aac8aa"
+}
