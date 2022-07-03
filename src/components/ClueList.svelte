@@ -18,13 +18,15 @@
 
 <ul>
     {#each clueData as clue}
-        <li
-            class:hilight={$currentClue?.[0] === clue.number && $currentClue?.[1] === direction}
-            on:click={() => onClick(clue.number)}
-        >
-            <span>{clue.number}</span>
-            {clue.clue}
-        </li>
+        {#if clue}
+            <li
+                class:hilight={$currentClue?.[0] === clue.number && $currentClue?.[1] === direction}
+                on:click={() => onClick(clue.number)}
+            >
+                <span>{clue.number}</span>
+                {clue.clue}
+            </li>
+        {/if}
     {/each}
 </ul>
 

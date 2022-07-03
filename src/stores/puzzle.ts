@@ -46,6 +46,10 @@ export const loadPuzzle = async (file: File) => {
     let cells: CellData[][] = [];
     let nextNum = 1;
     let clueNums: [number, 'across'|'down'][] = [];
+    let answerLetters = {
+        across: [],
+        down: [],
+    }
     for(let rowNum = 0; rowNum < header.height; rowNum++) {
         let row: CellData[] = [];
         for(let colNum = 0; colNum < header.width; colNum++) {
@@ -88,6 +92,26 @@ export const loadPuzzle = async (file: File) => {
                 down,
                 starts,
             });
+
+            if(across) {
+                if(typeof answerLetters.across[across] === 'undefined') {
+                    answerLetters.across[across] = {};
+                }
+                if(typeof answerLetters.across[across][solution[rowNum][colNum]] === 'undefined') {
+                    answerLetters.across[across][solution[rowNum][colNum]] = 0;
+                }
+                answerLetters.across[across][solution[rowNum][colNum]]++
+            }
+
+            if(down) {
+                if(typeof answerLetters.down[down] === 'undefined') {
+                    answerLetters.down[down] = {};
+                }
+                if(typeof answerLetters.down[down][solution[rowNum][colNum]] === 'undefined') {
+                    answerLetters.down[down][solution[rowNum][colNum]] = 0;
+                }
+                answerLetters.down[down][solution[rowNum][colNum]]++
+            }
         }
         cells.push(row);
     }
@@ -118,11 +142,12 @@ export const loadPuzzle = async (file: File) => {
             number,
             direction,
             clue,
+            hasAnswer: Object.keys(answerLetters[direction][number]).length > 1,
         };
         if(direction === 'across') {
-            clues.across.push(thisClueData);
+            clues.across[number] = thisClueData;
         } else {
-            clues.down.push(thisClueData);
+            clues.down[number] = thisClueData;
         }
     });
     clueData.set(clues);

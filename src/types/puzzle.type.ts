@@ -36,4 +36,5 @@ export type ClueData = {
     number: number;
     direction: 'across'|'down';
     clue: string;
+    hasAnswer: boolean;
 };

@@ -4,6 +4,7 @@
     import FileLoad from './components/FileLoad.svelte';
     import ClueDisplay from './components/ClueDisplay.svelte';
     import Grid from './components/Grid.svelte';
+    import ButtonBar from './components/ButtonBar.svelte';
     import ClueList from './components/ClueList.svelte';
 
     const STAY = 0;
@@ -88,6 +89,7 @@
             on:blur={onBlur}
         >
         <Grid acceptKeyInput={acceptKeyInput} />
+        <ButtonBar />
         <h2>Across</h2>
         <ClueList direction='across' clueData={$clueData.across} acceptKeyInput={acceptKeyInput} />
         <h2>Down</h2>

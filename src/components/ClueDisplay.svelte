@@ -5,7 +5,7 @@
     let clue = '';
     $: if($currentClue?.[0]) {
         clueNum = `${$currentClue[0]}${$currentClue[1].charAt(0).toUpperCase()}`;
-        clue = $clueData[$currentClue[1]].filter(clueData => clueData.number === $currentClue[0])[0].clue;
+        clue = $clueData[$currentClue[1]][$currentClue[0]].clue;
     }
 </script>
 
