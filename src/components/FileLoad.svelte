@@ -8,5 +8,6 @@
 </script>
 
 <section>
+    <h1>Pick A Puzzle</h1>
     <input type="file" bind:files accept=".puz" on:change={onFileSelect}>
 </section>

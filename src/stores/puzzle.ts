@@ -1,6 +1,8 @@
 import { Writable, writable } from 'svelte/store';
 import type { PuzHeader, PuzStrings, CellData, ClueData } from '../types/puzzle.type';
 
+export const show: Writable<'puzzle'|'load'> = writable('puzzle');
+
 export const puzHeader: Writable<PuzHeader> = writable(null);
 export const puzStrings: Writable<PuzStrings> = writable(null);
 export const cellData: Writable<CellData[][]> = writable(null);
@@ -158,4 +160,8 @@ export const loadPuzzle = async (file: File) => {
     //console.log(cells);
     //console.log('Strings:', strings);
     //console.log('Clues:', clues);
+
+    currentCell.set(null);
+    currentClue.set(null);
+    show.set('puzzle');
 };
