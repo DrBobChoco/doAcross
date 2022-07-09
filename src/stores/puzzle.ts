@@ -1,5 +1,6 @@
-import { Writable, writable } from 'svelte/store';
-import type { PuzHeader, PuzStrings, CellData, ClueData } from '../types/puzzle.type';
+import { Writable, writable, get } from 'svelte/store';
+import type { PuzHeader, PuzStrings, CellData, ClueData, PuzzleSave } from '../types/puzzle.type';
+import toast from '../stores/toast';
 
 export const show: Writable<'puzzle'|'load'> = writable('puzzle');
 
@@ -11,8 +12,9 @@ export const currentCell: Writable<[number, number]> = writable(null);
 export const canType: Writable<boolean> = writable(false);
 export const currentClue: Writable<[number, 'across'|'down']> = writable(null);
 
+const SAVE_DELIM = '|!!|';
 
-export const loadPuzzle = async (file: File) => {
+export const loadPuzzleFromFile = async (file: File) => {
     puzHeader.set(null);
     puzStrings.set(null);
 
@@ -31,10 +33,21 @@ export const loadPuzzle = async (file: File) => {
         numClues: numberData.getUint16(0x2E, true),
         unknownBitmask: numberData.getUint16(0x30, true),
         scrambledTag: numberData.getUint16(0x32, true),
+        saveKey: null,
     };
 
     if(header.fileMagic !== 'ACROSS&DOWN') {
         return false;
+    }
+    header.saveKey = 'doAcross:' + header.checksum.toString(16) + header.cibChecksum.toString(16) +
+        header.maskedLowChecksums.toString(16) + header.maskedHighChecksums.toString(16);
+    // See if we have this puzzle saved and load that in preference
+    try {
+        loadPuzzleFromStorage(header.saveKey);
+        toast.set('Loaded a previously saved version');
+        return;
+    } catch (e) {
+        // It'll throw if the puzzle wasn't there so just carry on loading from the file data
     }
     puzHeader.set(header);
 
@@ -162,6 +175,74 @@ export const loadPuzzle = async (file: File) => {
     //console.log('Clues:', clues);
 
     currentCell.set(null);
+    currentClue.set(null);
+    show.set('puzzle');
+};
+
+export const saveCurrentPuzzle = () => {
+    const puzzleSave: PuzzleSave = {
+        puzHeader: get(puzHeader),
+        puzStrings: get(puzStrings),
+        cellData: get(cellData),
+        clueData: get(clueData),
+
+    };
+
+    const saveStr =
+        puzzleSave.puzStrings.title + SAVE_DELIM +
+        Date.now() + SAVE_DELIM +
+        JSON.stringify(puzzleSave);
+    window.localStorage.setItem(puzzleSave.puzHeader.saveKey, saveStr);
+};
+
+export const getSavedPuzzles = () => {
+    const storage = window.localStorage;
+    let savedPuzzles = [];
+    for(let kn = 0; kn < storage.length; kn++) {
+        let saveKey = storage.key(kn);
+        if(saveKey.substring(0, 9) === 'doAcross:') {
+            const [title, date] = storage.getItem(saveKey).split(SAVE_DELIM).slice(0, 2);
+            savedPuzzles.push({
+                saveKey,
+                title,
+                date,
+            });
+        }
+    }
+
+    savedPuzzles = savedPuzzles.sort((a, b) => {
+        if(a.date === b.date) {
+            return 0;
+        }
+        return a.date > b.date ? -1 : 1;
+    });
+
+    return savedPuzzles;
+};
+
+export const loadPuzzleFromStorage = (saveKey: string) => {
+    const saveStr = window.localStorage.getItem(saveKey);
+    if(saveStr === null) {
+        throw 'Missing save data';
+    }
+    const saveData = saveStr.split(SAVE_DELIM);
+    if(saveData.length < 3) {
+        throw 'Bad save data';
+    }
+    // re-join any array elements beyond the title and time just in case there were some SAVE_DELIMs in the puzzle data
+    let puzzleSave: PuzzleSave;
+    try {
+        puzzleSave = JSON.parse(saveData.slice(2).join(SAVE_DELIM));
+    } catch (e) {
+        throw 'Error decoding save data';
+    }
+
+    puzHeader.set(puzzleSave.puzHeader);
+    puzStrings.set(puzzleSave.puzStrings);
+    cellData.set(puzzleSave.cellData);
+    clueData.set(puzzleSave.clueData);
+    currentCell.set(null);
+    canType.set(false);
     currentClue.set(null);
     show.set('puzzle');
 };

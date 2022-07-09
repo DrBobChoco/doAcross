@@ -12,6 +12,7 @@ export type PuzHeader = {
     numClues: number;
     unknownBitmask: number;
     scrambledTag: number;
+    saveKey: string;
 };
 
 export type PuzStrings = {
@@ -37,4 +38,11 @@ export type ClueData = {
     direction: 'across'|'down';
     clue: string;
     hasAnswer: boolean;
+};
+
+export type PuzzleSave = {
+    puzHeader: PuzHeader;
+    puzStrings: PuzStrings;
+    cellData: CellData[][];
+    clueData: {across: ClueData[]; down: ClueData[];};
 };

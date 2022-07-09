@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { onMount } from 'svelte';
+    import { onMount, onDestroy } from 'svelte';
     import { PuzStrings } from '../types/puzzle.type';
     import { clueData, puzStrings, show } from '../stores/puzzle';
     import { keyInput } from '../utils/keyInput';
@@ -12,6 +12,10 @@
     let inputTextbox;
     onMount(() => {
         keyInput.setKeyInput(inputTextbox);
+    });
+
+    onDestroy(() => {
+        keyInput.endKeyInput();
     });
 
     const showLoad = () => {

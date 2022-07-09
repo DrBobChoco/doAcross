@@ -1,4 +1,4 @@
-import { canType, cellData, currentCell, currentClue, puzHeader } from '../stores/puzzle';
+import { canType, cellData, currentCell, currentClue, puzHeader, saveCurrentPuzzle } from '../stores/puzzle';
 import { get } from 'svelte/store';
 
 const createKeyInput = () => {
@@ -9,6 +9,9 @@ const createKeyInput = () => {
     };
 
     let keyInput;
+
+    let needSave:boolean = false;
+    let intervalId:number = 0;
 
     const acceptKeyInput = () => {
         keyInput.focus();
@@ -46,6 +49,7 @@ const createKeyInput = () => {
                 if(!cellContent.match(/^[A-Z]$/)) {
                     return;
                 }
+                needSave = true;
         }
         const cData = get(cellData);
         cData[cCell[0]][cCell[1]].content = cellContent;
@@ -76,18 +80,35 @@ const createKeyInput = () => {
         }
 
         currentCell.set([rowNum, colNum]);
-    }
+    };
 
     const setKeyInput = (ki) => {
         ki.addEventListener('focus', onFocus);
         ki.addEventListener('blur', onBlur);
         ki.addEventListener('keyup', onKeyup);
         keyInput = ki;
-    }
+
+        if(intervalId === 0) {
+            intervalId = window.setInterval(() => {
+                if(needSave) {
+                    needSave = false;
+                    saveCurrentPuzzle();
+                }
+            }, 5000);
+        }
+    };
+
+    const endKeyInput = () => {
+        keyInput = null;
+        needSave = false;
+        window.clearInterval(intervalId);
+        window.setTimeout(saveCurrentPuzzle, 0);
+    };
 
     return {
         setKeyInput,
         acceptKeyInput,
+        endKeyInput,
     };
 }
 

@@ -1,14 +1,16 @@
 <script lang="ts">
     import { puzStrings, show } from './stores/puzzle';
+    import Toast from './components/Toast.svelte';
     import Puzzle from './components/Puzzle.svelte';
-    import FileLoad from './components/FileLoad.svelte';
+    import Load from './components/Load.svelte';
 </script>
 
+<Toast />
 <main>
     {#if $puzStrings !== null && $show === 'puzzle'}
         <Puzzle />
     {:else}
-        <FileLoad />
+        <Load />
     {/if}
 </main>
 
