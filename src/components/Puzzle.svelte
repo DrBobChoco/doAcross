@@ -23,35 +23,56 @@
     };
 </script>
 
-<section>
+<section class="puzzle">
     <h1>
         {$puzStrings.title}{#if $puzStrings.author !== ''}&nbsp;by&nbsp;{$puzStrings.author}{/if}
         <button on:click={showLoad}>Load</button>
     </h1>
     <ClueDisplay />
-    <input type="text" maxlength="1" bind:this={inputTextbox}>
-    <Grid acceptKeyInput={keyInput.acceptKeyInput} />
-    <ButtonBar />
-    <h2>Across</h2>
-    <ClueList direction='across' clueData={$clueData.across} acceptKeyInput={keyInput.acceptKeyInput} />
-    <h2>Down</h2>
-    <ClueList direction='down' clueData={$clueData.down} acceptKeyInput={keyInput.acceptKeyInput} />
+    <section>
+        <section>
+            <input type="text" maxlength="1" bind:this={inputTextbox}>
+            <Grid acceptKeyInput={keyInput.acceptKeyInput} />
+            <ButtonBar />
+        </section>
+        <section>
+            <h2>Across</h2>
+            <ClueList direction='across' clueData={$clueData.across} acceptKeyInput={keyInput.acceptKeyInput} />
+            <h2>Down</h2>
+            <ClueList direction='down' clueData={$clueData.down} acceptKeyInput={keyInput.acceptKeyInput} />
+        </section>
+    </section>
 </section>
 
 <style lang="scss">
-    h1 {
-        width: 50%;
-        position: relative;
-        margin: 0 auto;
+    section.puzzle {
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
 
-        button {
-            position: absolute;
-            right: 0;
-            font-size: 50%;
-            margin: 0.5em 0 0 0;
-            padding: 0.1em 0.25em;
+        h1 {
+            width: 100%;
+            position: relative;
+            margin: 0 auto 0.5em auto;
+
+            button {
+                position: absolute;
+                right: 0;
+                font-size: 50%;
+                font-weight: bold;
+                margin: 0.5em 0 0 0;
+                padding: 0.1em 0.25em;
+            }
+        }
+
+        @media (min-aspect-ratio: 1/1) and (min-width: 500px) {
+            & > section {
+                display: flex;
+                column-gap: 0.25rem;
+            }
         }
     }
+
 
     input {
         display: block;

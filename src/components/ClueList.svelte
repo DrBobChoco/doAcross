@@ -33,6 +33,7 @@
 <style lang="scss">
     ul {
         display: inline-block;
+        width: 100%;
         list-style-type: none;
         margin-top: 0;
         padding-left: 0;

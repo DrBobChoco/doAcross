@@ -42,9 +42,18 @@
         position: relative;
         border: 2px solid #000;
         background-color: #fff;
-        width: 30px;
-        height: 30px;
+        width: calc((100vw - 2rem - 80px) / 15);
+        height: calc((100vw - 2rem - 80px) / 15);
+        max-width: 3rem;
+        max-height: 3rem;
+        line-height: clamp(0rem, calc((100vw - 2rem - 80px) / 15), 3rem);
         font-weight: bold;
+
+        @media (min-aspect-ratio: 1/1) and (min-width: 500px) {
+            width: calc((45vw - 2rem) / 15);
+            height: calc((45vw - 2rem) / 15);
+            line-height: clamp(0rem, calc((45vw - 2rem) / 15), 3rem);
+        }
 
         &.hilight {
             background-color: var(--c-hilight);
@@ -67,6 +76,7 @@
             position: absolute;
             top: 0;
             left: 0;
+            line-height: normal;
             width: 10px;
             height: 10px;
             font-size: 8px;

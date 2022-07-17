@@ -19,12 +19,17 @@
 
 <style lang="scss">
     div {
-        width: 50%;
+        position: sticky;
+        top: 0.5em;
+        z-index: 2;
+        width: 98%;
         margin: 0 auto 0.75em auto;
-        text-align: left;
         padding: 8px 4px;
         border: 3px solid #000;
         border-radius: 6px;
+        box-shadow: 4px 4px 4px #aaa;
+        text-align: left;
+        background-color: #fff;
     }
 
     span {

@@ -37,7 +37,12 @@
         display: flex;
         justify-content: flex-start;
         gap: 0.75em;
-        width: 50%;
-        margin: 0.75em auto 0.75em auto;
+        margin: 0.75em 0.75em 0.75em auto;
+
+        @media (min-aspect-ratio: 1/1) and (min-width: 500px) {
+            button {
+                font-size: 75%;
+            }
+        }
     }
 </style>
