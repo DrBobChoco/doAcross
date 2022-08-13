@@ -15,6 +15,11 @@ const createKeyInput = () => {
 
     const acceptKeyInput = () => {
         keyInput.focus();
+
+        setTimeout(() => {
+            const cell = document.querySelector('div.grid div.selected');
+            cell?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 500);
     };
 
     const onFocus = () => {

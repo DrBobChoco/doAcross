@@ -77,7 +77,8 @@
     input {
         display: block;
         width: 40px;
-        position: absolute;
-        top: -1000px;
+        position: fixed;
+        top: 0;
+        left: -1000px;
     }
 </style>
