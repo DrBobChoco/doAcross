@@ -1,8 +1,7 @@
 import { Writable, writable, get } from 'svelte/store';
 import type { PuzHeader, PuzStrings, CellData, ClueData, PuzzleSave } from '../types/puzzle.type';
 import toast from '../stores/toast';
-
-export const show: Writable<'puzzle'|'load'> = writable('puzzle');
+import { push } from 'svelte-spa-router';
 
 export const puzHeader: Writable<PuzHeader> = writable(null);
 export const puzStrings: Writable<PuzStrings> = writable(null);
@@ -176,7 +175,7 @@ export const loadPuzzleFromFile = async (file: File) => {
 
     currentCell.set(null);
     currentClue.set(null);
-    show.set('puzzle');
+    push('/');
 };
 
 export const saveCurrentPuzzle = () => {
@@ -244,5 +243,5 @@ export const loadPuzzleFromStorage = (saveKey: string) => {
     currentCell.set(null);
     canType.set(false);
     currentClue.set(null);
-    show.set('puzzle');
+    push('/');
 };

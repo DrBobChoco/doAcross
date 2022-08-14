@@ -1,17 +1,12 @@
 <script lang="ts">
-    import { puzStrings, show } from './stores/puzzle';
     import Toast from './components/Toast.svelte';
-    import Puzzle from './components/Puzzle.svelte';
-    import Load from './components/Load.svelte';
+    import Router from 'svelte-spa-router';
+    import routes from './routes';
 </script>
 
 <Toast />
 <main>
-    {#if $puzStrings !== null && $show === 'puzzle'}
-        <Puzzle />
-    {:else}
-        <Load />
-    {/if}
+    <Router {routes} />
 </main>
 
 <style lang="scss">
