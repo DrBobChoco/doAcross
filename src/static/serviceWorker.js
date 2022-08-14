@@ -1,13 +1,13 @@
 const cacheName = 'doAcross-v0.1';
 const filesToCache = [
-    '/',
-    '/index.html',
-    '/global.css',
-    '/favicon.png',
-    '/build/bundle.js',
-    '/build/bundle.css',
-    '/images/icon-512.png',
-    '/images/icon-32.png',
+    './',
+    './index.html',
+    './global.css',
+    './favicon.png',
+    './build/bundle.js',
+    './build/bundle.css',
+    './images/icon-512.png',
+    './images/icon-32.png',
 ];
 
 self.addEventListener('install', (ev) => {
