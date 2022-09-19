@@ -1,6 +1,8 @@
 import { canType, cellData, currentCell, currentClue, puzHeader, saveCurrentPuzzle } from '../stores/puzzle';
 import { get } from 'svelte/store';
 
+const INPUT_RESET = "DB";
+
 const createKeyInput = () => {
     const enum MoveDir {
         BACKWARD = -1,
@@ -14,7 +16,7 @@ const createKeyInput = () => {
     let intervalId:number = 0;
 
     const acceptKeyInput = () => {
-        keyInput.focus();
+        resetKeyInput();
 
         setTimeout(() => {
             const cell = document.querySelector('div.grid div.selected');
@@ -22,18 +24,23 @@ const createKeyInput = () => {
         }, 500);
     };
 
+    const resetKeyInput = () => {
+        keyInput.focus();
+        keyInput.value = INPUT_RESET;
+        keyInput.setSelectionRange(1, 1);
+    };
+
     const onFocus = () => {
         //console.log('Input focus');
         canType.set(true);
-    }
+    };
 
     const onBlur = () => {
         //console.log('Input blur');
         canType.set(false);
-    }
+    };
 
-    const onKeyup = (ev) => {
-        //console.log(ev.code);
+    const onKeyup = () => {
         const cCell = get(currentCell);
         if(!cCell) {
             return;
@@ -41,20 +48,22 @@ const createKeyInput = () => {
 
         let cellContent = '';
         let direction: MoveDir;
-        switch(ev.code) {
-            case 'Backspace':
-                direction = MoveDir.BACKWARD;
-                break;
-            case 'Delete':
-                direction = MoveDir.STAY;
-                break;
-            default:
-                direction = MoveDir.FORWARD;
-                cellContent = ev.key.charAt(0).toUpperCase();
-                if(!cellContent.match(/^[A-Z]$/)) {
-                    return;
-                }
-                needSave = true;
+        let inputVal = keyInput.value;
+        resetKeyInput();
+
+        if(inputVal === 'B') { // Backspace
+            direction = MoveDir.BACKWARD;
+        } else if(inputVal === 'D') { // Delete
+            direction = MoveDir.STAY;
+        } else if(inputVal.length < 3) {
+            return; // shouldn't happen by this point
+        } else {
+            direction = MoveDir.FORWARD;
+            cellContent = inputVal.charAt(1).toUpperCase();
+            if(!cellContent.match(/^[A-Z]$/)) {
+                return;
+            }
+            needSave = true;
         }
         const cData = get(cellData);
         cData[cCell[0]][cCell[1]].content = cellContent;

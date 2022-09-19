@@ -42,7 +42,7 @@
         <ClueDisplay />
         <section>
             <section>
-                <input type="text" maxlength="1" bind:this={inputTextbox}>
+                <input type="text" maxlength="3" bind:this={inputTextbox}>
                 <Grid acceptKeyInput={keyInput.acceptKeyInput} />
                 <ButtonBar />
             </section>
