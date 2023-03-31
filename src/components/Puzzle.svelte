@@ -39,10 +39,10 @@
             {$puzStrings.title}{#if $puzStrings.author !== ''}&nbsp;by&nbsp;{$puzStrings.author}{/if}
             <button on:click={showLoad}>Load</button>
         </h1>
-        <ClueDisplay />
         <section>
             <section>
                 <input type="text" maxlength="3" bind:this={inputTextbox}>
+                <ClueDisplay />
                 <Grid acceptKeyInput={keyInput.acceptKeyInput} />
                 <ButtonBar />
             </section>
